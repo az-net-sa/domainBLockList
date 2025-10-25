@@ -12,6 +12,7 @@ do.dsp.mp.microsoft.com
 prod.do.dsp.mp.microsoft.com
 definitionupdates.microsoft.com
 adl.windows.com
+edge.microsoft.com
 
 # Telemetry and diagnostics
 v10.events.data.microsoft.com
