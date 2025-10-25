@@ -1,49 +1,47 @@
-# EXTREME Windows 11 blocklist (updates + telemetry + store); paste regex lines into Pi-hole Regex, comments are for reference [web:39][web:22]
+# Updates + Delivery Optimization (no wildcards)
+download.windowsupdate.com
+au.download.windowsupdate.com
+au.b1.download.windowsupdate.com
+b1.download.windowsupdate.com
+windowsupdate.com
+update.microsoft.com
+dl.delivery.mp.microsoft.com
+tlu.dl.delivery.mp.microsoft.com
+delivery.mp.microsoft.com
+do.dsp.mp.microsoft.com
+prod.do.dsp.mp.microsoft.com
+definitionupdates.microsoft.com
+adl.windows.com
 
-# Windows Update + Delivery Optimization (blocks update checks and payload downloads) [web:21][web:22]
-(^|\.)windowsupdate\.com$                 # Core Windows Update domains [web:21][web:22]
-(^|\.)update\.microsoft\.com$             # Microsoft Update service (metadata + downloads) [web:21][web:22]
-(^|\.)prod\.do\.dsp\.mp\.microsoft\.com$  # DO control service used by WU/Store content delivery [web:21][web:22]
-(^|\.)dl\.delivery\.mp\.microsoft\.com$   # DO content CDN for update payloads [web:21][web:22]
-(^|\.)delivery\.mp\.microsoft\.com$       # Additional content services (WU/Store/UUP) [web:21][web:22]
-^tsfe\.trafficshaping\.dsp\.mp\.microsoft\.com$  # DO traffic shaping endpoint [web:21][web:22]
-^adl\.windows\.com$                       # App/OS compatibility/UUP catalog [web:21][web:22]
-^definitionupdates\.microsoft\.com$       # Defender signature update service (blocking disables AV defs) [web:21][web:22]
+# Telemetry and diagnostics
+v10.events.data.microsoft.com
+self.events.data.microsoft.com
+functional.events.data.microsoft.com
+pipe.aria.microsoft.com
+watson.telemetry.microsoft.com
+telecommand.telemetry.microsoft.com
+www.telecommandsvc.microsoft.com
+browser.events.data.msn.com
+teams.events.data.microsoft.com
 
-# Telemetry and diagnostics (reduces data reporting and incident telemetry) [web:21][web:22]
-^v10\.events\.data\.microsoft\.com$       # Primary events ingestion [web:21][web:22]
-^self\.events\.data\.microsoft\.com$      # Device-bound events [web:21][web:22]
-^functional\.events\.data\.microsoft\.com$ # Functional telemetry [web:21]
-(^|\.)pipe\.aria\.microsoft\.com$         # Aria telemetry pipeline [web:21][web:22]
-^watson\.telemetry\.microsoft\.com$       # Watson telemetry [web:22]
-^watson\..*\.microsoft\.com$              # Additional Watson endpoints [web:21]
-^telecommand\.telemetry\.microsoft\.com$  # Telemetry commands [web:21]
-^www\.telecommandsvc\.microsoft\.com$     # Telemetry command service [web:21]
-^browser\.events\.data\.msn\.com$         # Browser events (MSN services) [web:21]
-^teams\.events\.data\.microsoft\.com$     # Teams telemetry [web:21]
+# Config and policy
+settings-win.data.microsoft.com
+settings.data.microsoft.com
 
-# Config and policy (disables remote config/diagnostic settings checks) [web:21][web:22]
-(^|\.)settings-win\.data\.microsoft\.com$ # Windows diagnostic/config service [web:21][web:22]
-(^|\.)settings\.data\.microsoft\.com$     # Legacy/aux config endpoints [web:21][web:22]
+# Store and notifications
+displaycatalog.mp.microsoft.com
+storesdk.dsx.mp.microsoft.com
+storeedgefd.dsx.mp.microsoft.com
+storecatalogrevocation.storequality.microsoft.com
+wns.windows.com
+livetileedge.dsx.mp.microsoft.com
 
-# Microsoft Store and notifications (breaks Store UI, app updates, push notifications) [web:21][web:22]
-(^|\.)displaycatalog\.mp\.microsoft\.com$ # Store catalog [web:21][web:22]
-^storesdk\.dsx\.mp\.microsoft\.com$       # Store SDK endpoints [web:22]
-^storeedgefd\.dsx\.mp\.microsoft\.com$    # Store frontend [web:22]
-^storecatalogrevocation\.storequality\.microsoft\.com$ # License/catalog revocation [web:21][web:22]
-(^|\.)wns\.windows\.com$                  # Windows Push Notification Service [web:21][web:22]
-^livetileedge\.dsx\.mp\.microsoft\.com$   # Live tile/Store content [web:21]
+# Optional: even stricter privacy
+login.live.com
+msedge.api.cdp.microsoft.com
+licensing.mp.microsoft.com
+dmd.metaservices.microsoft.com
+msftconnecttest.com
 
-# Optional: even stricter privacy (breaks sign-in, licensing, connectivity checks) [web:21][web:22]
-(^|\.)login\.live\.com$                   # Microsoft account sign-in [web:21][web:22]
-(^|\.)msedge\.api\.cdp\.microsoft\.com$   # Edge/OS update & policy API [web:21][web:22]
-(^|\.)licensing\.mp\.microsoft\.com$      # App/Store licensing [web:21][web:22]
-^dmd\.metaservices\.microsoft\.com$       # Device metadata service [web:21][web:22]
-(^|\.)msftconnecttest\.com$               # NCSI internet detection (breaks “internet access” status) [web:21][web:22]
-
-# IMPORTANT: do NOT add the following; blocking it can break TLS trust (root cert updates) [web:21][web:22]
-# ctldl.windowsupdate.com                 # Leave this unblocked to avoid certificate issues [web:21][web:22]
-
-# Notes:
-# - Use the (^|\.)...$ form to match both the apex and all subdomains in Pi-hole regex filters [web:39]
-# - For per-device control, assign these regex entries to a dedicated Group and attach only your Windows PC to that Group [web:50]
+# DO NOT INCLUDE (leave unblocked for certificates)
+# ctldl.windowsupdate.com
